@@ -119,74 +119,72 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script>
-    // Flatpickr: พ.ศ.
-    flatpickr("#date", {
-      dateFormat: "d/m/Y",
-      locale: "th",
-      altInput: true,
-      altFormat: "d/m/Y",
-      onReady: function(selectedDates, dateStr, instance) {
-        const yearElem = instance.currentYearElement;
-        if (yearElem) {
-          const year = parseInt(yearElem.value);
-          if (!isNaN(year) && year < 2500) {
-            yearElem.value = year + 543;
+  flatpickr("#date", {
+    dateFormat: "d/m/Y",
+    locale: "th",
+    altInput: true,
+    altFormat: "d/m/Y",
+    onReady: function(selectedDates, dateStr, instance) {
+      const yearElem = instance.currentYearElement;
+      if (yearElem) {
+        const year = parseInt(yearElem.value);
+        if (!isNaN(year) && year < 2500) {
+          yearElem.value = year + 543;
+        }
+        yearElem.addEventListener("blur", function() {
+          let val = parseInt(this.value);
+          if (!isNaN(val) && val < 2400) {
+            this.value = val + 543;
           }
-          yearElem.addEventListener("blur", function() {
-            let val = parseInt(this.value);
-            if (!isNaN(val)) {
-              if (val < 2400) this.value = val + 543;
-            }
-          });
-        }
-      },
-      onChange: function(selectedDates, dateStr, instance) {
-        const y = selectedDates[0].getFullYear();
-        if (y < 2500) {
-          instance.currentYearElement.value = y + 543;
-        }
+        });
       }
-    });
+    },
+    onChange: function(selectedDates, dateStr, instance) {
+      const y = selectedDates[0].getFullYear();
+      if (y < 2500) {
+        instance.currentYearElement.value = y + 543;
+      }
+    }
+  });
 
-    const form = document.getElementById('bookingForm');
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(form).entries());
+  const form = document.getElementById('bookingForm');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
 
-      fetch('fetch('https://script.google.com/macros/s/AKfycbwKTBlRjUks2We6SKtfWIXEmvoWc5KLnfNiSZHYwuktR5tumHY6Oh31y6jIJ9KHYciQ/exec', {
-', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' }
-      })
-      .then(res => res.text())
-      .then(text => {
-        if (text === 'success') {
-          Swal.fire({
-            icon: 'success',
-            title: 'จองนัดสำเร็จ!',
-            text: 'ขอบคุณที่ใช้บริการ',
-            confirmButtonColor: '#0d6efd'
-          });
-          form.reset();
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'เกิดข้อผิดพลาด',
-            text: 'ไม่สามารถส่งข้อมูลได้ กรุณาลองใหม่',
-            confirmButtonColor: '#d33'
-          });
-        }
-      })
-      .catch(() => {
+    const formData = new FormData(form); // ✅ ใช้ FormData แทน JSON
+
+    fetch('https://script.google.com/macros/s/AKfycbwKTBlRjUks2We6SKtfWIXEmvoWc5KLnfNiSZHYwuktR5tumHY6Oh31y6jIJ9KHYciQ/exec', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.text())
+    .then(text => {
+      if (text === 'success') {
+        Swal.fire({
+          icon: 'success',
+          title: 'จองนัดสำเร็จ!',
+          text: 'ขอบคุณที่ใช้บริการ',
+          confirmButtonColor: '#0d6efd'
+        });
+        form.reset();
+      } else {
         Swal.fire({
           icon: 'error',
-          title: 'ระบบผิดพลาด',
-          text: 'กรุณาตรวจสอบเครือข่ายหรือเซิร์ฟเวอร์',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถส่งข้อมูลได้ กรุณาลองใหม่',
           confirmButtonColor: '#d33'
         });
+      }
+    })
+    .catch(() => {
+      Swal.fire({
+        icon: 'error',
+        title: 'ระบบผิดพลาด',
+        text: 'กรุณาตรวจสอบเครือข่ายหรือเซิร์ฟเวอร์',
+        confirmButtonColor: '#d33'
       });
     });
-  </script>
+  });
+</script>
 </body>
 </html>
