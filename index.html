@@ -207,23 +207,28 @@
             }
         });
 
-        // ส่วน JavaScript สำหรับเชื่อมต่อกับ Google Apps Script
+        // ส่วน JavaScript สำหรับเชื่อมต่อกับ Google Apps Script (แก้ไขแล้ว)
         const form = document.getElementById('bookingForm');
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            const data = Object.fromEntries(new FormData(form).entries());
+            // เก็บข้อมูลจากฟอร์มในรูปแบบ FormData
+            const formData = new FormData(form);
+            // แปลง FormData เป็น URLSearchParams string เพื่อให้เป็น application/x-www-form-urlencoded
+            const params = new URLSearchParams(formData);
 
-            // *** สำคัญ: แทนที่ YOUR_WEB_APP_URL_FROM_APPS_SCRIPT_DEPLOYMENT ด้วย URL จริงของคุณ ***
-            const webAppUrl = 'https://script.google.com/macros/s/AKfycbxj7xJVDW-_RorLtfiF-Mvpc298jTPifmCVl0PU-6lEuxY4OZj5A5ofVy1M4VslCk-i/exec'; // เช่น https://script.google.com/macros/s/AKfycb.../exec
+            // *** Web App URL ของคุณ (ต้องตรงกับที่คุณ Deploy จาก Apps Script) ***
+            const webAppUrl = 'https://script.google.com/macros/s/AKfycbxj7xJVDW-_RorLtfiF-Mvpc298jTPifmCVl0PU-6lEuxY4OZj5A5ofVy1M4VslCk-i/exec'; 
 
             fetch(webAppUrl, {
                 method: 'POST',
-                body: JSON.stringify(data),
+                // ส่งข้อมูลในรูปแบบ x-www-form-urlencoded
+                body: params.toString(), // ใช้ toString() ของ URLSearchParams
                 headers: {
-                    'Content-Type': 'application/json' // ระบุ Content-Type เป็น JSON
+                    // *** เปลี่ยน Content-Type เป็น application/x-www-form-urlencoded ***
+                    'Content-Type': 'application/x-www-form-urlencoded' 
                 }
             })
-            .then(res => res.text()) // เปลี่ยนจาก .json() เป็น .text() เพราะ Apps Script ส่ง text กลับมา
+            .then(res => res.text()) // Apps Script ยังคงส่ง text กลับมา
             .then(responseText => {
                 if (responseText === 'success') {
                     Swal.fire({
@@ -234,18 +239,17 @@
                     });
                     form.reset();
                 } else {
-                    // ถ้า Apps Script ส่งข้อความ error กลับมา
                     Swal.fire({
                         icon: 'error',
                         title: 'เกิดข้อผิดพลาด',
-                        text: 'ไม่สามารถส่งข้อมูลได้: ' + responseText, // แสดงข้อความ error จาก Apps Script
+                        text: 'ไม่สามารถส่งข้อมูลได้: ' + responseText,
                         confirmButtonColor: '#d33'
                     });
-                    console.error("Apps Script Response Error:", responseText); // บันทึกใน Console
+                    console.error("Apps Script Response Error:", responseText);
                 }
             })
             .catch((error) => {
-                console.error("Fetch Error:", error); // บันทึก error เต็มๆ ลง Console
+                console.error("Fetch Error:", error);
                 Swal.fire({
                     icon: 'error',
                     title: 'ระบบผิดพลาด',
