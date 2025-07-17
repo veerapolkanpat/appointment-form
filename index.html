@@ -1,191 +1,193 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>ระบบจองนัด รพ.วีระพลการแพทย์</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <title>ระบบจองนัด รพ.วีระพลการแพทย์</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font + Flatpickr + SweetAlert2 -->
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-  <style>
-    body {
-      font-family: 'Prompt', sans-serif;
-      background: linear-gradient(to right, #e3f2fd, #f0f8ff);
-      padding: 20px;
-    }
-    .form-card {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      padding: 30px;
-      max-width: 600px;
-      margin: 40px auto;
-    }
-    h3 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-weight: 600;
-      color: #0d6efd;
-    }
-    .logo {
-      display: block;
-      margin: 0 auto 20px;
-      width: 100px;
-    }
-    .btn-primary {
-      background-color: #0d6efd;
-      border: none;
-    }
-    .btn-primary:hover {
-      background-color: #0b5ed7;
-    }
-    .btn-line {
-      background-color: #00c300;
-      color: white;
-    }
-    .btn-line:hover {
-      background-color: #00a000;
-    }
-    label {
-      font-weight: 500;
-    }
-  </style>
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(to right, #e3f2fd, #f0f8ff);
+      padding: 20px;
+    }
+    .form-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      max-width: 600px;
+      margin: 40px auto;
+    }
+    h3 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 600;
+      color: #0d6efd;
+    }
+    .logo {
+      display: block;
+      margin: 0 auto 20px;
+      width: 100px;
+    }
+    .btn-primary {
+      background-color: #0d6efd;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #0b5ed7;
+    }
+    .btn-line {
+      background-color: #00c300;
+      color: white;
+    }
+    .btn-line:hover {
+      background-color: #00a000;
+    }
+    label {
+      font-weight: 500;
+    }
+  </style>
 </head>
 <body>
 
-  <div class="form-card">
-    <!-- โลโก้โรงพยาบาล -->
-    <div class="text-center mb-3">
-      <img src="https://raw.githubusercontent.com/amnaj5412/appointment-form/main/logo.png"
-           alt="โลโก้โรงพยาบาล"
-           style="max-width: 160px; height: auto;">
-    </div>
+  <div class="form-card">
+        <div class="text-center mb-3">
+      <img src="https://raw.githubusercontent.com/amnaj5412/appointment-form/main/logo.png"
+           alt="โลโก้โรงพยาบาล"
+           style="max-width: 160px; height: auto;">
+    </div>
 
-    <h3>ระบบจองนัด</h3>
+    <h3>ระบบจองนัด</h3>
 
-    <form id="bookingForm">
-      <div class="mb-3">
-        <label>ชื่อผู้ป่วย</label>
-        <input type="text" class="form-control" name="patient_name" required>
-      </div>
-      <div class="mb-3">
-        <label>เลขบัตรประชาชน</label>
-        <input type="text" class="form-control" name="citizen_id" pattern="\d{13}" maxlength="13" required>
-      </div>
-      <div class="mb-3">
-        <label>เบอร์โทร</label>
-        <input type="tel" class="form-control" name="phone" required>
-      </div>
-      <div class="mb-3">
-        <label>แพทย์ที่ต้องการพบ</label>
-        <select class="form-select" name="doctor" required>
-          <option value="">-- กรุณาเลือก --</option>
-          <option>นพ.วีระพล พจน์จลองศิลป์</option>
-          <option>นพ.พนิช พจน์จลองศิลป์</option>
-          <option>พญ.สุมณทิพย์ พจน์จลองศิลป์</option>
-          <option>พญ.บุษบงก์ ดวงมาตย์พล</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label>วันที่นัด</label>
-        <input type="text" id="date" class="form-control" name="date" required>
-      </div>
-      <div class="mb-3">
-        <label>ช่วงเวลาที่นัด</label>
-        <select class="form-select" name="time" required>
-          <option value="">-- กรุณาเลือก --</option>
-          <option>09:00 - 12:00</option>
-          <option>13:00 - 16:00</option>
-        </select>
-      </div>
-      <button type="submit" class="btn btn-primary w-100">ยืนยันการจอง</button>
-    </form>
+    <form id="bookingForm">
+      <div class="mb-3">
+        <label>ชื่อผู้ป่วย</label>
+        <input type="text" class="form-control" name="patient_name" required>
+      </div>
+      <div class="mb-3">
+        <label>เลขบัตรประชาชน</label>
+        <input type="text" class="form-control" name="citizen_id" pattern="\d{13}" maxlength="13" required>
+      </div>
+      <div class="mb-3">
+        <label>เบอร์โทร</label>
+        <input type="tel" class="form-control" name="phone" required>
+      </div>
+      <div class="mb-3">
+        <label>แพทย์ที่ต้องการพบ</label>
+        <select class="form-select" name="doctor" required>
+          <option value="">-- กรุณาเลือก --</option>
+          <option>นพ.วีระพล พจน์จลองศิลป์</option>
+          <option>นพ.พนิช พจน์จลองศิลป์</option>
+          <option>พญ.สุมณทิพย์ พจน์จลองศิลป์</option>
+          <option>พญ.บุษบงก์ ดวงมาตย์พล</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label>วันที่นัด</label>
+        <input type="text" id="date" class="form-control" name="date" required>
+      </div>
+      <div class="mb-3">
+        <label>ช่วงเวลาที่นัด</label>
+        <select class="form-select" name="time" required>
+          <option value="">-- กรุณาเลือก --</option>
+          <option>09:00 - 12:00</option>
+          <option>13:00 - 16:00</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">ยืนยันการจอง</button>
+    </form>
 
-    <div class="text-center mt-4">
-      <a href="https://line.me/R/ti/p/@981gqmdr" target="_blank" class="btn btn-line w-100">
-        💬 แชทกับเจ้าหน้าที่ผ่าน LINE
-      </a>
-    </div>
-  </div>
+    <div class="text-center mt-4">
+      <a href="https://line.me/R/ti/p/@981gqmdr" target="_blank" class="btn btn-line w-100">
+        💬 แชทกับเจ้าหน้าที่ผ่าน LINE
+      </a>
+    </div>
+  </div>
 
-  <!-- JS -->
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/th.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <script>
-    // Flatpickr: พ.ศ.
-    flatpickr("#date", {
-      dateFormat: "d/m/Y",
-      locale: "th",
-      altInput: true,
-      altFormat: "d/m/Y",
-      onReady: function(selectedDates, dateStr, instance) {
-        const yearElem = instance.currentYearElement;
-        if (yearElem) {
-          const year = parseInt(yearElem.value);
-          if (!isNaN(year) && year < 2500) {
-            yearElem.value = year + 543;
-          }
-          yearElem.addEventListener("blur", function() {
-            let val = parseInt(this.value);
-            if (!isNaN(val)) {
-              if (val < 2400) this.value = val + 543;
-            }
-          });
-        }
-      },
-      onChange: function(selectedDates, dateStr, instance) {
-        const y = selectedDates[0].getFullYear();
-        if (y < 2500) {
-          instance.currentYearElement.value = y + 543;
-        }
-      }
-    });
+  <script>
+    // Flatpickr: พ.ศ. (โค้ดส่วนนี้ยังคงเดิม)
+    flatpickr("#date", {
+      dateFormat: "d/m/Y",
+      locale: "th",
+      altInput: true,
+      altFormat: "d/m/Y",
+      onReady: function(selectedDates, dateStr, instance) {
+        const yearElem = instance.currentYearElement;
+        if (yearElem) {
+          const year = parseInt(yearElem.value);
+          if (!isNaN(year) && year < 2500) {
+            yearElem.value = year + 543;
+          }
+          yearElem.addEventListener("blur", function() {
+            let val = parseInt(this.value);
+            if (!isNaN(val)) {
+              if (val < 2400) this.value = val + 543;
+            }
+          });
+        }
+      },
+      onChange: function(selectedDates, dateStr, instance) {
+        const y = selectedDates[0].getFullYear();
+        if (y < 2500) {
+          instance.currentYearElement.value = y + 543;
+        }
+      }
+    });
 
-    const form = document.getElementById('bookingForm');
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(form).entries());
+    // ส่วน JavaScript ที่แก้ไขแล้วสำหรับเชื่อมต่อกับ PHP (XAMPP)
+    const form = document.getElementById('bookingForm');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
 
-      fetch('https://script.google.com/macros/s/AKfycbxj7xJVDW-_RorLtfiF-Mvpc298jTPifmCVl0PU-6lEuxY4OZj5A5ofVy1M4VslCk-i/exec', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Content-Type': 'application/json' }
-      })
-      .then(res => res.text())
-      .then(text => {
-        if (text === 'success') {
-          Swal.fire({
-            icon: 'success',
-            title: 'จองนัดสำเร็จ!',
-            text: 'ขอบคุณที่ใช้บริการ',
-            confirmButtonColor: '#0d6efd'
-          });
-          form.reset();
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'เกิดข้อผิดพลาด',
-            text: 'ไม่สามารถส่งข้อมูลได้ กรุณาลองใหม่',
-            confirmButtonColor: '#d33'
-          });
-        }
-      })
-      .catch(() => {
-        Swal.fire({
-          icon: 'error',
-          title: 'ระบบผิดพลาด',
-          text: 'กรุณาตรวจสอบเครือข่ายหรือเซิร์ฟเวอร์',
-          confirmButtonColor: '#d33'
-        });
-      });
-    });
-  </script>
+      // *** เปลี่ยน URL ตรงนี้ให้ชี้ไปยังไฟล์ PHP ของคุณบน XAMPP ***
+      // หากไฟล์ HTML นี้ (index.html) อยู่ในโฟลเดอร์ htdocs เดียวกับ api.php
+      // และคุณเปิดผ่าน http://localhost/index.html คุณสามารถใช้ 'http://localhost/api.php'
+      // หาก HTML ของคุณอยู่บน GitHub Pages คุณจะต้องใช้ IP สาธารณะของเครื่องที่รัน XAMPP
+      // หรือโดเมนที่เชื่อมโยงกับ IP นั้น เช่น 'http://your_public_ip/api.php'
+      fetch('http://localhost/api.php', { // <--- ตรวจสอบ URL นี้ให้ถูกต้องตามการตั้งค่าของคุณ
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(res => res.json()) // เปลี่ยน .text() เป็น .json() เพราะ PHP จะส่ง JSON กลับมา
+      .then(response => {
+        if (response.status === 'success') { // ตรวจสอบจาก property 'status' ใน JSON response ที่ PHP ส่งมา
+          Swal.fire({
+            icon: 'success',
+            title: 'จองนัดสำเร็จ!',
+            text: 'ขอบคุณที่ใช้บริการ',
+            confirmButtonColor: '#0d6efd'
+          });
+          form.reset();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: 'ไม่สามารถส่งข้อมูลได้: ' + (response.message || 'Unknown error'), // แสดงข้อความ error จาก backend
+            confirmButtonColor: '#d33'
+          });
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'ระบบผิดพลาด',
+          text: 'กรุณาตรวจสอบเครือข่ายหรือเซิร์ฟเวอร์: ' + error,
+          confirmButtonColor: '#d33'
+        });
+      });
+    });
+  </script>
 </body>
 </html>
